@@ -56,7 +56,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     try:
-        model = joblib.load("C:\\Users\\hp\\Desktop\\dsml_siwes_project\\Football_outcome_Random_model_final.pkl")
+        model = joblib.load("Football_outcome_Random_model_final.pkl")
         return model
     except:
         st.error("Model file not found. Please train the model first.")
@@ -65,7 +65,7 @@ def load_model():
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv(r"C:\Users\hp\Desktop\dsml_siwes_project\final_data\ML_ready_data3.csv", encoding='latin1')
+        df = pd.read_csv("ML_ready_data3.csv")
         return df
     except:
         st.error("Data file not found.")
@@ -409,16 +409,25 @@ elif page == "📈 Data Insights":
             outcome_counts = df['FullTimeResult'].value_counts()
             outcome_labels = {0: 'Away Win', 1: 'Draw', 2: 'Home Win'}
             
+            
             fig = go.Figure(data=[
                 go.Pie(
-                    labels=[outcome_labels[k] for k in outcome_counts.index],
                     values=outcome_counts.values,
                     hole=0.4,
                     marker_colors=['#ee0979', '#f5576c', '#38ef7d']
                 )
             ])
+            
             fig.update_layout(title='Overall Match Outcome Distribution')
+            st.info("0 for Away Win, 1 for Draw, 2 for Home Win")
+            
             st.plotly_chart(fig, use_container_width=True)
+            st.info("""
+            **Insight:** Home wins dominate (approx. 54%), followed by away wins (approx. 26%)
+            and draws (approx. 20%). This home advantage trend is crucial for model predictions.""")
+            
+            st.markdown("---")
+            st.subheader("Goals Scored Distribution")
             
             col1, col2 = st.columns(2)
             
